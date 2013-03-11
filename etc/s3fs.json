@@ -1,0 +1,7 @@
+[
+	{ 
+		// this will mount the s3 bucket "bucket-13aj2o73v" to the /my-bucket/ folder in your application.
+		"localfolder": "my-bucket",
+		"bucket": "bucket-13aj2o73v" 
+	}
+]
