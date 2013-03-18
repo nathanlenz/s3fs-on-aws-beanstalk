@@ -1,6 +1,10 @@
 [
 	{
-		"localfolder": "my-bucket",
-		"bucket": "bucket-13aj2o73v" 
+		"local_folder": "my-bucket",
+		"bucket": "bucket-13aj2o73v",
+		"cache_folder": "/tmp",
+		"gid": "501",
+		"uid": "500",
+		"default_acl": "public-read"
 	}
 ]

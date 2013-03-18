@@ -26,23 +26,29 @@ if (!empty($s3fs_mounts)) {
 	// loop through each of the mounts
 	foreach($s3fs_mounts as $m) {
 
-		if (empty($m['localfolder']) || empty($m['bucket'])) {
-			echo "Error: missing localfolder or bucket in mount configuration file.\n";
+		if (empty($m['local_folder']) || empty($m['bucket'])) {
+			echo "Error: missing local_folder or bucket in mount configuration file.\n";
 			continue;
 		}
 
 		// does the local folder exist?
 		// if not, create it.
-		if (!file_exists($m['localfolder'])) {
-			echo "Making the local folder: $ondeck_app_directory/{$m['localfolder']}\n";
-			mkdir($m['localfolder'], 0775, TRUE);
-			shell_exec("chown webapp.webapp {$m['localfolder']}");
+		if (!file_exists($m['local_folder'])) {
+			echo "Making the local folder: $ondeck_app_directory/{$m['local_folder']}\n";
+			mkdir($m['local_folder'], 0775, TRUE);
+			shell_exec("chown webapp.webapp {$m['local_folder']}");
 		}
 		
 		/**
-		 * Don't create the mounts, put a hook script into 
+		 * Don't create the mounts, put a hook script into elastic beanstalk's deploy process
 		 */
-		$mount_command = 's3fs '.escapeshellarg($m['bucket']).' '.escapeshellarg($current_app_directory.'/'.$m['localfolder']).' -o use_cache=/tmp -o default_acl=public-read -o allow_other -o gid=501 -o uid=500';
+		$mount_command = 's3fs '.escapeshellarg($m['bucket']);
+		$mount_command .= ' '.escapeshellarg($current_app_directory.'/'.$m['local_folder']);
+		$mount_command .= ' -o '.(!empty($m['cache_folder'])?escapeshellarg('use_cache='.$m['cache_folder']):'use_cache=/tmp'); 
+		$mount_command .= ' -o '.(!empty($m['default_acl'])?escapeshellarg('default_acl='.$m['default_acl']):'default_acl=public-read');
+		$mount_command .= ' -o allow_other'; // needed to allow any other users access
+		$mount_command .= ' -o '.(!empty($m['gid'])?escapeshellarg('gid='.$m['gid']):'gid=501');
+		$mount_command .= ' -o '.(!empty($m['uid'])?escapeshellarg('uid='.$m['uid']):'uid=500');
 		
 		$deploy_hook_contents .= $mount_command."\n";
 
