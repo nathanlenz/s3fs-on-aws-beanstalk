@@ -15,8 +15,12 @@ echo <<<JSONS3
 [
 	{ 
 		// this will mount the s3 bucket "name.of.bucket" to the /my-bucket/ folder in your application.
-		"localfolder": "my-bucket",
-		"bucket": "name.of.bucket" 
+		"local_folder": "my-bucket",
+		"bucket": "name.of.bucket",
+		"cache_folder": "/tmp",
+		"gid": "501",
+		"uid": "500",
+		"default_acl": "public-read"
 	}
 ]
 </pre>
@@ -25,24 +29,27 @@ JSONS3;
 } else {
 
 	echo "<h2>You have configured the following buckets:</h2>
-	<ul>";
-	foreach($s3fs_mounts as $mount) {
-		echo "<li>Bucket: <i>{$mount['bucket']}</i> should be mounted at <i>{$mount['localfolder']}</i><br>";
+    <ul>";
+    foreach($s3fs_mounts as $mount) {
+            echo "<li>Bucket: <i>{$mount['bucket']}</i> should be mounted at <i>{$mount['local_folder']}</i><br>";
 
-		if (file_exists($mount['localfolder'].'/bucket.png')) {
-			echo "Image served from the bucket folder:<br>";
-			echo "<img src='/{$mount['localfolder']}/bucket.png' alt='bucket'>";
-		} else if ($_GET['place'] === $mount['bucket']) {
-			copy('bucket.png', $mount['localfolder'].'/bucket.png');
-			header('Location: /index.php');
-			exit();
-		} else {
-			echo "<a href='index.php?place=".urlencode($mount['bucket'])."'>Try putting an image on the bucket.</a>";
-		}
+            if (file_exists($mount['local_folder'].'/bucket.png')) {
+                    echo "Image served from the bucket folder:<br>";
+                    echo "<img style='max-width: 70px;' src='/{$mount['local_folder']}/bucket.png' alt='bucket'>";
+            } else if ($_GET['place'] === $mount['bucket']) {
+                    if (!copy('bucket.png', $mount['local_folder'].'/bucket.png')) {
+                            echo "Could not copy the image into {$mount['local_folder']}";
+                    } else {
+                            header('Location: /index.php');
+                            exit();
+                    }
+            } else {
+                    echo "<a href='index.php?place=".urlencode($mount['bucket'])."'>Try putting an image on the bucket.</a>";
+            }
 
-		echo "</li>";
-	}
-	echo "</ul>";
+            echo "</li>";
+    }
+    echo "</ul>";
 
 	echo "<h3>s3fs mounts in your /proc/mounts file:</h3>
 	<pre>";
