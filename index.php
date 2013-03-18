@@ -27,7 +27,20 @@ JSONS3;
 	echo "<h2>You have configured the following buckets:</h2>
 	<ul>";
 	foreach($s3fs_mounts as $mount) {
-		echo "<li>Bucket: <i>{$mount['bucket']}</i> should be mounted at <i>{$mount['localfolder']}</i></li>";
+		echo "<li>Bucket: <i>{$mount['bucket']}</i> should be mounted at <i>{$mount['localfolder']}</i><br>";
+
+		if (file_exists($mount['localfolder'].'/bucket.png')) {
+			echo "Image served from the bucket folder:<br>";
+			echo "<img src='/{$mount['localfolder']}/bucket.png' alt='bucket'>";
+		} else if ($_GET['place'] === $mount['bucket']) {
+			copy('bucket.png', $mount['localfolder'].'/bucket.png');
+			header('Location: /index.php');
+			exit();
+		} else {
+			echo "<a href='index.php?place=".urlencode($mount['bucket'])."'>Try putting an image on the bucket.</a>";
+		}
+
+		echo "</li>";
 	}
 	echo "</ul>";
 
@@ -36,6 +49,8 @@ JSONS3;
 	echo `cat /proc/mounts|grep s3fs`;
 	echo "</pre>";
 	
+
+
 }
 
 
