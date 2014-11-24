@@ -47,8 +47,8 @@ if (!empty($s3fs_mounts)) {
 		$mount_command .= ' -o '.(!empty($m['cache_folder'])?escapeshellarg('use_cache='.$m['cache_folder']):'use_cache=/tmp'); 
 		$mount_command .= ' -o '.(!empty($m['default_acl'])?escapeshellarg('default_acl='.$m['default_acl']):'default_acl=public-read');
 		$mount_command .= ' -o allow_other'; // needed to allow any other users access
-		$mount_command .= ' -o '.(!empty($m['gid'])?escapeshellarg('gid='.$m['gid']):'gid=501');
-		$mount_command .= ' -o '.(!empty($m['uid'])?escapeshellarg('uid='.$m['uid']):'uid=500');
+		$mount_command .= ' -o '.(!empty($m['gid'])?escapeshellarg('gid='.$m['gid']):'gid=498');
+		$mount_command .= ' -o '.(!empty($m['uid'])?escapeshellarg('uid='.$m['uid']):'uid=498');
 		
 		$deploy_hook_contents .= $mount_command."\n";
 

@@ -1,10 +1,10 @@
 [
 	{
-		"local_folder": "my-bucket",
-		"bucket": "bucket-13aj2o73v",
+		"local_folder": "moodledata",
+		"bucket": "fi-moodledata-dev",
 		"cache_folder": "/tmp",
-		"gid": "501",
-		"uid": "500",
+		"gid": "498",
+		"uid": "498",
 		"default_acl": "public-read"
 	}
 ]
