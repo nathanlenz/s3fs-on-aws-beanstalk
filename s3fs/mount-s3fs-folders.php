@@ -49,7 +49,8 @@ if (!empty($s3fs_mounts)) {
 		$mount_command .= ' -o allow_other'; // needed to allow any other users access
 		$mount_command .= ' -o '.(!empty($m['gid'])?escapeshellarg('gid='.$m['gid']):'gid=498');
 		$mount_command .= ' -o '.(!empty($m['uid'])?escapeshellarg('uid='.$m['uid']):'uid=498');
-		
+		$mount_command .= ' -o '.(!empty($m['host'])?escapeshellarg('host='.$m['host']):'host=http://s3-us-east-1.amazonaws.com');
+
 		$deploy_hook_contents .= $mount_command."\n";
 
 	}
