@@ -14,11 +14,13 @@ if (!empty($existing_mounts)) {
 	foreach($existing_mounts as $existing) {
 		$existing = trim($existing);
 
-		if (!empty($existing)) {		
+		if (!empty($existing)) {
 			echo "Unmount: $existing\n";
 			shell_exec('fusermount -u '.escapeshellarg($existing));	
 		}
 	}
+} else {
+	echo "No S3FS volumes found to unmount.";
 }
 
 ?>

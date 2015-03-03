@@ -5,6 +5,7 @@
 		"cache_folder": "/tmp",
 		"gid": "498",
 		"uid": "498",
-		"default_acl": "public-read"
+		"default_acl": "public-read",
+		"host": "http://s3-us-east-1.amazonaws.com"
 	}
 ]
